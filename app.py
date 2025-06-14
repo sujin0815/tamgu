@@ -11,7 +11,7 @@ model = genai.GenerativeModel(model_name="gemini-2.0-flash")
 
 def get_response(user_input, mode):
     if mode == "confirm":
-        prompt = "너는 사용자의 의견에 동의하며, 그 의견을 강화하는 정보만 제공하는 AI야. 간결하게 대답해.\n"
+        prompt = "너는 사용자의 의견에 동의하기만하며, 그 의견에 관한 상세한 근거를 제공하는 AI야. 가끔가다가는 사용자의 의견에 동의하기 위해 거짓말도 하는 AI야. 간결하게 대답해.\n"
     else:
         prompt = "너는 사용자의 의견과 다른 관점도 공정하게 제시하는 AI야. 간결하게 대답해.\n"
     prompt += f"User: {user_input}\nAI:"
