@@ -1,41 +1,29 @@
-<!-- templates/index.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>AI 대화</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            padding: 20px;
-        }
-        input[type="text"] {
-            width: 300px;
-            padding: 10px;
-        }
-        button {
-            padding: 10px;
-        }
-        .response {
-            margin-top: 20px;
-            background-color: #f0f0f0;
-            padding: 10px;
-            border-radius: 5px;
-        }
-    </style>
+    <title>확증편향 vs 다양성 AI</title>
 </head>
 <body>
-    <h1>AI와 대화하기</h1>
-    <form method="post">
-        <input type="text" name="user_input" placeholder="질문을 입력하세요" required>
-        <button type="submit">보내기</button>
+    <h1>AI에게 질문해보세요</h1>
+
+    <form method="POST">
+        <label for="user_input">질문:</label><br>
+        <input type="text" id="user_input" name="user_input" value="{{ user_input }}" style="width: 400px;" required><br><br>
+
+        <label>모드 선택:</label><br>
+        <input type="radio" id="confirm" name="mode" value="confirm" {% if selected_mode == 'confirm' %}checked{% endif %}>
+        <label for="confirm">확증편향 (내 의견에 동의)</label><br>
+
+        <input type="radio" id="diverse" name="mode" value="diverse" {% if selected_mode == 'diverse' %}checked{% endif %}>
+        <label for="diverse">다양성 (다른 관점도 보여줌)</label><br><br>
+
+        <button type="submit">AI에게 물어보기</button>
     </form>
 
     {% if answer %}
-        <div class="response">
-            <h3>AI의 답변:</h3>
-            <p>{{ answer }}</p>
-        </div>
+        <h2>AI의 응답:</h2>
+        <p>{{ answer }}</p>
     {% endif %}
 </body>
 </html>
