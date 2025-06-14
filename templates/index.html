@@ -33,13 +33,6 @@
         <label for="user_input">질문:</label><br>
         <input type="text" id="user_input" name="user_input" value="{{ user_input }}" required><br><br>
 
-        <label>모드 선택:</label><br>
-        <input type="radio" id="confirm" name="mode" value="confirm" {% if selected_mode == 'confirm' %}checked{% endif %}>
-        <label for="confirm">확증편향 (내 의견에 동의)</label><br>
-
-        <input type="radio" id="diverse" name="mode" value="diverse" {% if selected_mode == 'diverse' %}checked{% endif %}>
-        <label for="diverse">다양성 (다른 관점도 보여줌)</label><br><br>
-
         <button type="submit">AI에게 물어보기</button>
     </form>
 
