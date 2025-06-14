@@ -3,13 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <title>확증편향 vs 다양성 AI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        input[type="text"] {
+            width: 400px;
+            padding: 10px;
+        }
+        button {
+            padding: 10px;
+        }
+        .response {
+            margin-top: 20px;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .back {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <h1>AI에게 질문해보세요</h1>
 
     <form method="POST">
         <label for="user_input">질문:</label><br>
-        <input type="text" id="user_input" name="user_input" value="{{ user_input }}" style="width: 400px;" required><br><br>
+        <input type="text" id="user_input" name="user_input" value="{{ user_input }}" required><br><br>
 
         <label>모드 선택:</label><br>
         <input type="radio" id="confirm" name="mode" value="confirm" {% if selected_mode == 'confirm' %}checked{% endif %}>
@@ -22,8 +44,14 @@
     </form>
 
     {% if answer %}
-        <h2>AI의 응답:</h2>
+    <div class="response">
+        <h3>AI의 답변:</h3>
         <p>{{ answer }}</p>
+    </div>
     {% endif %}
+
+    <div class="back">
+        <a href="{{ url_for('select_mode') }}">← 모드 다시 선택하기</a>
+    </div>
 </body>
 </html>

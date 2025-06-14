@@ -1,14 +1,14 @@
 # app.py
 from flask import Flask, render_template, request, session, redirect, url_for
 import google.generativeai as genai
-import os  # 환경변수 불러오기용
+import os
 
 app = Flask(__name__)
-app.secret_key = "sujin1325!"
+app.secret_key = "sujin1325!"  # 세션을 위한 비밀키
 
 # 환경변수에서 API 키 불러오기
 api_key = os.environ.get("API_KEY")
-genai.configure(api_key=api_key)  # 환경변수에서 키 설정
+genai.configure(api_key=api_key)
 model = genai.GenerativeModel(model_name="gemini-2.0-flash")
 
 def get_response(user_input, mode):
@@ -24,7 +24,7 @@ def get_response(user_input, mode):
 def index():
     if "mode" not in session:
         return redirect(url_for("select_mode"))
-    
+
     answer = ""
     if request.method == "POST":
         user_input = request.form["user_input"]
@@ -39,13 +39,7 @@ def select_mode():
         selected = request.form["mode"]
         session["mode"] = selected
         return redirect(url_for("index"))
-    return """
-    <form method="post">
-        <h2>모드를 선택하세요:</h2>
-        <button name="mode" value="confirm">확증편향</button>
-        <button name="mode" value="diverse">다양성</button>
-    </form>
-    """
+    return render_template("select.html")
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000, debug=False)
