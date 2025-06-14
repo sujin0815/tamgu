@@ -1,12 +1,10 @@
-# app.py
 from flask import Flask, render_template, request, session, redirect, url_for
 import google.generativeai as genai
 import os
 
 app = Flask(__name__)
-app.secret_key = "sujin1325!"  # 세션을 위한 비밀키
+app.secret_key = "sujin1325!"
 
-# 환경변수에서 API 키 불러오기
 api_key = os.environ.get("API_KEY")
 genai.configure(api_key=api_key)
 model = genai.GenerativeModel(model_name="gemini-2.0-flash")
@@ -20,26 +18,34 @@ def get_response(user_input, mode):
     response = model.generate_content(prompt)
     return response.text.strip()
 
-@app.route("/", methods=["GET", "POST"])
-def index():
-    if "mode" not in session:
-        return redirect(url_for("select_mode"))
-
-    answer = ""
-    if request.method == "POST":
-        user_input = request.form["user_input"]
-        mode = session["mode"]
-        answer = get_response(user_input, mode)
-
-    return render_template("index.html", answer=answer)
+@app.route("/")
+def root():
+    # 첫 접속 시 바로 모드 선택 페이지로 이동
+    return redirect(url_for("select_mode"))
 
 @app.route("/select", methods=["GET", "POST"])
 def select_mode():
     if request.method == "POST":
         selected = request.form["mode"]
         session["mode"] = selected
-        return redirect(url_for("index"))
+        return redirect(url_for("chat"))
     return render_template("select.html")
+
+@app.route("/chat", methods=["GET", "POST"])
+def chat():
+    if "mode" not in session:
+        # 세션에 모드 없으면 다시 선택 페이지로
+        return redirect(url_for("select_mode"))
+
+    answer = ""
+    user_input = ""
+    mode = session["mode"]
+
+    if request.method == "POST":
+        user_input = request.form["user_input"]
+        answer = get_response(user_input, mode)
+
+    return render_template("index.html", answer=answer, user_input=user_input, selected_mode=mode)
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000, debug=False)
