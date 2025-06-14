@@ -1,12 +1,14 @@
 # app.py
 from flask import Flask, render_template, request, session, redirect, url_for
 import google.generativeai as genai
+import os  # 환경변수 불러오기용
 
 app = Flask(__name__)
 app.secret_key = "sujin1325!"
 
-# Gemini 설정
-genai.configure(api_key="AIzaSyDMqA1eo9ep7RMdSbCxtnVWm6Q9I9D-hzU")  # <-- 여기에 너의 실제 API 키를 넣어야 해!
+# 환경변수에서 API 키 불러오기
+api_key = os.environ.get("API_KEY")
+genai.configure(api_key=api_key)  # 환경변수에서 키 설정
 model = genai.GenerativeModel(model_name="gemini-2.0-flash")
 
 def get_response(user_input, mode):
@@ -46,5 +48,4 @@ def select_mode():
     """
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000, debug=True)
-
+    app.run(host="0.0.0.0", port=10000, debug=False)
